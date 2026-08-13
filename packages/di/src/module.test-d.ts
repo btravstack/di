@@ -163,6 +163,18 @@ describe("Module algebra", () => {
     });
   });
 
+  test("a composition root omits provides entirely", () => {
+    // The common deployment-module shape (btravstack/di#9): imports and
+    // re-exported ports only. `provides` (like `imports` and `exports`) is
+    // optional and defaults to empty — no `provides: []` ceremony required.
+    const root = Module("Root")({
+      imports: [ConfigModule],
+      exports: [AppConfig],
+    });
+    const typed: Module<AppConfig, ConfigError, never> = root;
+    void typed;
+  });
+
   test("re-exporting an imported module widens Exports to its exports", () => {
     const facade = Module("Facade")({
       imports: [ConfigModule],

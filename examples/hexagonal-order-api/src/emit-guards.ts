@@ -189,3 +189,31 @@ export const defineConcretePort = <const Id extends string>(
   class Fixed extends Port(id)<{ readonly value: string }> {}
   return Fixed;
 };
+
+/**
+ * The second half of the same bug, and the one the return annotation above does
+ * NOT reach.
+ *
+ * `defineConcretePort` covers a factory *returning* a data-built port: there,
+ * naming the class is the stop, and exporting `PortInstance` would not have
+ * helped because the emitter needs the class, not the instance. Put that port
+ * in a module's `exports:` and the shape inverts — `Module`'s first type
+ * argument is the union of exported port *instances*, so the emitter now needs
+ * exactly the name the other case did not: `PortInstance`. With it unexported
+ * this line was `TS4023: has or is using name 'ID' ... but cannot be named`.
+ *
+ * Both names are load bearing, for opposite reasons, which is why neither one
+ * alone closed the hole. Measured in `@btravstack/config`: annotating the
+ * factory's return fixed every consumer that *declared* a config and none that
+ * *exported* one from its composition root.
+ *
+ * The forgery directives above are what keep this from being bought too
+ * cheaply — naming `PortInstance` is safe only while `ID`/`SERVICE` stay
+ * unreachable, and those `@ts-expect-error`s are the assertion that they are.
+ */
+const DataBuiltPort = defineConcretePort("DataBuiltPort");
+
+export const ModuleExportingDataBuiltPort = Module("ModuleExportingDataBuiltPort")({
+  provides: [Provider(DataBuiltPort)({ value: { value: "" } })],
+  exports: [DataBuiltPort],
+});

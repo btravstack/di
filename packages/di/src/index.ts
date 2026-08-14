@@ -46,8 +46,19 @@ export { Port } from "./port.js";
 // failed with `TS4023: 'X' has or is using name 'ID' from external module but
 // cannot be named`. `ConcretePortClass<Id, Service>` is the name it stops at, and
 // `defineConcretePort` in `emit-guards.ts` is that shape, kept compiling.
-// `PortInstance` itself stays unexported: annotating the factory's return is
-// enough, so the smaller widening is the one that ships.
+//
+// `PortInstance` is the *other* half of that same bug, and the reason two names
+// ship rather than one. Annotating the factory's return covers a consumer that
+// DECLARES a data-built port; put that port in a module's `exports:` and the
+// shape inverts. `Module`'s first type argument is the union of exported port
+// *instances*, so the emitter needs the instance name precisely where the class
+// name is no help — and the class name was no help, which is why exporting
+// `PortInstance` alone was tried first and rejected. Neither closes the hole
+// alone. Measured in `@btravstack/config`: the return annotation fixed every
+// consumer that declared a config and none that exported one from a composition
+// root, which had been papering over it with `declaration: false` — the same
+// override this example deleted from its own packages, for the same reason.
+// `ModuleExportingDataBuiltPort` in `emit-guards.ts` is that shape.
 //
 // The safety argument is unchanged and is the one this file already makes: the
 // brand *keys* stay unexported, so naming the instance type buys no forgery —
@@ -58,6 +69,7 @@ export type {
   ConcretePortClass,
   ManyPortClass,
   PortClass,
+  PortInstance,
   Scope,
   ServiceOf,
 } from "./port.js";

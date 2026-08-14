@@ -54,6 +54,10 @@ export type PortClass<Id extends string> = {
  * `examples/hexagonal-order-api/src/emit-guards.ts`.
  *
  * The brands themselves stay unexported, so this buys naming, not forgery.
+ *
+ * This covers a factory *returning* such a port. A module that **exports** one
+ * inverts the shape and needs {@link PortInstance} instead — neither name
+ * closes both cases; see the note above the export list in `index.ts`.
  */
 export type ConcretePortClass<Id extends string, Service> = {
   new (): PortInstance<Id, Service>;

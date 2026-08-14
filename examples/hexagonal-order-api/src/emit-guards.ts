@@ -50,7 +50,14 @@
  *     just the instance types nameable, the plain port emitted and the set
  *     port still reported `private name 'MANY'`.
  */
-import { Module, Port, Provider, type AnyPort, type ServiceOf } from "@btravstack/di";
+import {
+  Module,
+  Port,
+  Provider,
+  type AnyPort,
+  type FixedPortClass,
+  type ServiceOf,
+} from "@btravstack/di";
 import { Ok, type AsyncResult } from "unthrown";
 
 import {
@@ -160,3 +167,22 @@ export const identity = <P extends AnyPort>(port: P): P => port;
 /** Factories whose *return* type is the class type itself, not an instance. */
 export const definePort = <const Id extends string>(id: Id) => Port(id);
 export const defineSetPort = <const Id extends string>(id: Id) => Port.many(id);
+
+/**
+ * A factory that fixes the service shape **inside itself** and returns the
+ * class — what a port built from data rather than from a type argument looks
+ * like (`@btravstack/config`'s `Config(prefix)(shape)`, which derives the
+ * service from a schema record).
+ *
+ * `definePort` above stops at `PortClass<Id>` because `Service` is still open
+ * there, applied later by the consumer's own heritage clause. Here it is
+ * already applied, so the return type IS the instance type and the emitter has
+ * nothing to stop at short of `PortInstance` — which is why that type is
+ * exported. Without it this line is `TS4023`, not a style preference.
+ */
+export const defineFixedPort = <const Id extends string>(
+  id: Id,
+): FixedPortClass<Id, { readonly value: string }> => {
+  class Fixed extends Port(id)<{ readonly value: string }> {}
+  return Fixed;
+};

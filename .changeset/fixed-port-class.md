@@ -3,7 +3,7 @@
 ---
 
 Export `FixedPortClass<Id, Service>`, the type a factory annotates its return
-with when it builds a port from *data* rather than from a type argument.
+with when it builds a port from _data_ rather than from a type argument.
 
 `PortClass<Id>` covers the open case, where `Service` arrives later from a
 heritage clause (`class X extends Port("X")<Shape> {}`). A factory that applies

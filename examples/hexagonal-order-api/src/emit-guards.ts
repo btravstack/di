@@ -176,9 +176,12 @@ export const defineSetPort = <const Id extends string>(id: Id) => Port.many(id);
  *
  * `definePort` above stops at `PortClass<Id>` because `Service` is still open
  * there, applied later by the consumer's own heritage clause. Here it is
- * already applied, so the return type IS the instance type and the emitter has
- * nothing to stop at short of `PortInstance` — which is why that type is
- * exported. Without it this line is `TS4023`, not a style preference.
+ * already applied, so there is no such name to stop at and the emitter expands
+ * to the private `[ID]`/`[SERVICE]` brands. The **return annotation** below is
+ * the stop: naming `FixedPortClass<Id, Service>` is what keeps the emitter out
+ * of the brands. Exporting `PortInstance` was tried first and does not do it —
+ * it names the instance, not the class. Drop the annotation and this line is
+ * `TS4023`, not a style preference.
  */
 export const defineFixedPort = <const Id extends string>(
   id: Id,

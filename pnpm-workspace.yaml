@@ -19,8 +19,8 @@ catalog:
   "@changesets/cli": 2.31.1
   "@commitlint/cli": 21.2.1
   "@types/node": 26.1.2
-  "@unthrown/oxlint": 5.1.0
-  "@unthrown/vitest": 5.1.0
+  "@unthrown/oxlint": 5.5.0
+  "@unthrown/vitest": 5.5.0
   knip: 6.32.0
   lefthook: 2.1.10
   oxfmt: 0.62.0
@@ -43,7 +43,7 @@ catalog:
   # twice — the same arrangement, and the same alias, as
   # `@btravstack/entity`'s `examples/billing-domain`.
   typescript-consumer: "npm:typescript@5.9.3"
-  unthrown: 5.1.0
+  unthrown: 5.5.0
   "@vitest/coverage-v8": 4.1.10
   vitepress: 1.6.4
   vitest: 4.1.10

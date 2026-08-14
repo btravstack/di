@@ -36,7 +36,7 @@ export { Port } from "./port.js";
 // output needs them once the class types are reachable, and `emit-guards.ts` in
 // `examples/hexagonal-order-api` is the fixture that keeps that true.
 //
-// `FixedPortClass` was added for one shape the sentence above did not cover: a
+// `ConcretePortClass` was added for one shape the sentence above did not cover: a
 // factory that fixes `Service` *inside itself* and returns the class as a value
 // — `Config(prefix)(shape)` in `@btravstack/config`, which builds a port from a
 // schema record. `PortClass<Id>` is enough only while `Service` is still open,
@@ -44,8 +44,8 @@ export { Port } from "./port.js";
 // Port("X")<Shape> {}`. Once the factory has applied it, the return type IS the
 // instance type, the emitter has nothing to stop at, and every such consumer
 // failed with `TS4023: 'X' has or is using name 'ID' from external module but
-// cannot be named`. `FixedPortClass<Id, Service>` is the name it stops at, and
-// `defineFixedPort` in `emit-guards.ts` is that shape, kept compiling.
+// cannot be named`. `ConcretePortClass<Id, Service>` is the name it stops at, and
+// `defineConcretePort` in `emit-guards.ts` is that shape, kept compiling.
 // `PortInstance` itself stays unexported: annotating the factory's return is
 // enough, so the smaller widening is the one that ships.
 //
@@ -55,7 +55,7 @@ export { Port } from "./port.js";
 // `@ts-expect-error` directives in `emit-guards.ts` are what hold that line.
 export type {
   AnyPort,
-  FixedPortClass,
+  ConcretePortClass,
   ManyPortClass,
   PortClass,
   Scope,

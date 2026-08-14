@@ -38,8 +38,10 @@ export type PortClass<Id extends string> = {
  * read back at runtime.
  */
 /**
- * A port class whose `Service` is already applied — what a factory returns when
- * it builds a port from data rather than from a type argument
+ * A port class whose `Service` is already applied — *concrete*, in the sense
+ * the note on `PortClass` below already uses ("has a concrete constructor once
+ * `Shape` is fixed"). This is what a factory returns when it builds a port from
+ * data rather than from a type argument
  * (`Config(prefix)(shape)` deriving a service from a schema record).
  *
  * `PortClass<Id>` covers the open case, where `Service` is still supplied by a
@@ -48,12 +50,12 @@ export type PortClass<Id extends string> = {
  * fully-resolved `PortInstance`, and the declaration emitter has no exported
  * name to stop at: it expands to the `[ID]`/`[SERVICE]` brands and every
  * consumer fails with `TS4023`. Annotating such a factory's return with this
- * alias is the stop the emitter needs — see `defineFixedPort` in
+ * alias is the stop the emitter needs — see `defineConcretePort` in
  * `examples/hexagonal-order-api/src/emit-guards.ts`.
  *
  * The brands themselves stay unexported, so this buys naming, not forgery.
  */
-export type FixedPortClass<Id extends string, Service> = {
+export type ConcretePortClass<Id extends string, Service> = {
   new (): PortInstance<Id, Service>;
   readonly portId: Id;
 };

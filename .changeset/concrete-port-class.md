@@ -2,7 +2,7 @@
 "@btravstack/di": minor
 ---
 
-Export `FixedPortClass<Id, Service>`, the type a factory annotates its return
+Export `ConcretePortClass<Id, Service>`, the type a factory annotates its return
 with when it builds a port from _data_ rather than from a type argument.
 
 `PortClass<Id>` covers the open case, where `Service` arrives later from a
@@ -14,5 +14,5 @@ every such consumer failed with `TS4023`. The same class of bug the `PortClass`
 export fixed, in the one shape that export did not reach.
 
 The brands stay unexported, so this names the class without making a port
-instance forgeable. `defineFixedPort` in `examples/hexagonal-order-api`'s
+instance forgeable. `defineConcretePort` in `examples/hexagonal-order-api`'s
 `emit-guards.ts` is the regression fixture.

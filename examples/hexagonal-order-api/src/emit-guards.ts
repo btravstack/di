@@ -55,7 +55,7 @@ import {
   Port,
   Provider,
   type AnyPort,
-  type FixedPortClass,
+  type ConcretePortClass,
   type ServiceOf,
 } from "@btravstack/di";
 import { Ok, type AsyncResult } from "unthrown";
@@ -178,14 +178,14 @@ export const defineSetPort = <const Id extends string>(id: Id) => Port.many(id);
  * there, applied later by the consumer's own heritage clause. Here it is
  * already applied, so there is no such name to stop at and the emitter expands
  * to the private `[ID]`/`[SERVICE]` brands. The **return annotation** below is
- * the stop: naming `FixedPortClass<Id, Service>` is what keeps the emitter out
+ * the stop: naming `ConcretePortClass<Id, Service>` is what keeps the emitter out
  * of the brands. Exporting `PortInstance` was tried first and does not do it —
  * it names the instance, not the class. Drop the annotation and this line is
  * `TS4023`, not a style preference.
  */
-export const defineFixedPort = <const Id extends string>(
+export const defineConcretePort = <const Id extends string>(
   id: Id,
-): FixedPortClass<Id, { readonly value: string }> => {
+): ConcretePortClass<Id, { readonly value: string }> => {
   class Fixed extends Port(id)<{ readonly value: string }> {}
   return Fixed;
 };

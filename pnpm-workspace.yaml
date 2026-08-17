@@ -21,7 +21,7 @@ catalog:
   "@types/node": 26.1.2
   "@unthrown/oxlint": 5.5.0
   "@unthrown/vitest": 5.5.0
-  knip: 6.32.0
+  knip: 6.32.2
   lefthook: 2.1.10
   oxfmt: 0.62.0
   oxlint: 1.77.0
